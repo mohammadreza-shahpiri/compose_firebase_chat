@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "708184285520",
+    "project_id": "fir-chat-63ac8",
+    "storage_bucket": "fir-chat-63ac8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708184285520:android:f108bfd07ac33291958c55",
+        "android_client_info": {
+          "package_name": "com.github.compose.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708184285520-d498laph0veiqjvaa8sghvouh9a1ckck.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.compose.chat",
+            "certificate_hash": "406cc7f0f3f09560137598447bbc0e292f870567"
+          }
+        },
+        {
+          "client_id": "708184285520-qd6ifuu7ocf99o4duqh0g6qmqc7dlvsj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6SOvAXHhmsW7iMn2fHOD07rn1bFTViAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708184285520-qd6ifuu7ocf99o4duqh0g6qmqc7dlvsj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
