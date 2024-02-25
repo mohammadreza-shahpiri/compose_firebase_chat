@@ -1,4 +1,7 @@
 <resources>
+    <string name="Home">Home</string>
+    <string name="Person">Person</string>
+    <string name="Settings">Settings</string>
     <string name="app_name">Firebase Chat</string>
     <string name="default_web_client_id" translatable="false">webClientId.apps.googleusercontent.com</string>
 </resources>

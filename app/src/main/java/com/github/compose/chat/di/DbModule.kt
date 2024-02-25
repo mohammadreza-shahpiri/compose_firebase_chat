@@ -2,8 +2,8 @@ package com.github.compose.chat.di
 
 import android.content.Context
 import androidx.room.Room
-import com.github.compose.chat.data.source.local.UserInfoDao
-import com.github.compose.chat.data.source.local.UserInfoDatabase
+import com.github.compose.chat.data.source.UserInfoDao
+import com.github.compose.chat.data.source.UserInfoDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

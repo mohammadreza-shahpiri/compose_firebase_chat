@@ -4,6 +4,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
     id ("com.google.devtools.ksp")
+    id ("kotlinx-serialization")
 }
 
 android {
@@ -23,7 +24,7 @@ android {
 
     buildTypes {
         val key="708184285520-qd6ifuu7ocf99o4duqh0g6qmqc7dlvsj.apps.googleusercontent.com"
-        val messageUrl="https://fcm.googleapis.com/v1/projects/fir-chat-63ac8/messages:send"
+        val messageUrl="https://fcm.googleapis.com/v1/projects/fir-chat-63ac8/"
         debug {
             buildConfigField(
                 "String",
@@ -37,7 +38,7 @@ android {
             )
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             buildConfigField(
                 "String",
                 "ServerKey",
@@ -96,6 +97,8 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7")
+    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation(kotlin("reflect"))
     //////////////////////ROOM//////////////////////////////
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")
@@ -105,7 +108,7 @@ dependencies {
     val hiltVersion = "2.50"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     //////////////////////////COMPOSE///////////////////////////////////
     implementation(platform("androidx.compose:compose-bom:2024.01.00"))
     implementation("androidx.activity:activity-compose:1.8.2")
@@ -116,7 +119,8 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation ("com.airbnb.android:lottie-compose:6.3.0")
+    implementation("com.airbnb.android:lottie-compose:6.3.0")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     /////////////////////////FIREBASE///////////////////////////////
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation("com.google.firebase:firebase-auth-ktx")
@@ -125,8 +129,16 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     implementation("com.google.auth:google-auth-library-oauth2-http:1.23.0")
-
+    /////////////////////RETROFIT&NETWORK///////////////////////////////////////
+    val ktorVersion="2.3.8"
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+    implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-auth:$ktorVersion")
 }

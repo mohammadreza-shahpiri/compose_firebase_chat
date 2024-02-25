@@ -2,7 +2,7 @@ package com.github.compose.chat.ui.screen
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.border
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,7 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.compose.chat.R
 import com.github.compose.chat.data.model.UserInfoModel
-import com.github.compose.chat.data.source.local.UserConfig
+import com.github.compose.chat.data.source.DbManager
+import com.github.compose.chat.data.source.UserConfig
+import com.github.compose.chat.firebase.AuthManager
 import com.github.compose.chat.navigation.NavTarget
 import com.github.compose.chat.ui.custom.IconText
 import com.github.compose.chat.ui.custom.LoadingCircle
@@ -49,36 +51,37 @@ fun LoginScreen(
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             task.addOnCompleteListener { accountTask ->
                 if (accountTask.isSuccessful && accountTask.result.idToken != null) {
-                    authManager.signInWithCredential(
+                    signInWithCredential(
+                        authManager = authManager,
+                        firebaseDb = firebaseDb,
                         idToken = accountTask.result.idToken!!,
-                        onSuccess = { user ->
-                            UserConfig.userEmail = user.email
-                            UserConfig.userName = user.displayName
-                            UserConfig.userId = user.uid
-                            firebaseDb.updateUser(
-                                user = UserInfoModel(),
-                                onSuccess = {
-                                    loading = false
-                                    mainViewModel.navigateTo(NavTarget.Main.Base)
-                                },
-                                onFailure = {
-                                    loading = false
-                                    mainViewModel.showErrorToast(it)
-                                }
-                            )
+                        onSuccess = {
+                            loading = false
+                            mainViewModel.navigateTo(NavTarget.Main.Base)
                         },
                         onFailure = {
                             loading = false
                             mainViewModel.showErrorToast(it)
                         }
                     )
-                }else{
+                } else {
                     loading = false
                     mainViewModel.showErrorToast(accountTask.exception.toString())
                 }
             }
         }
     )
+    LoginStateless(loading = loading) {
+        loading = true
+        authManager.launchSignIn(launcher = launcher)
+    }
+}
+
+@Composable
+fun LoginStateless(
+    loading: Boolean,
+    loginClick: () -> Unit
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -98,32 +101,53 @@ fun LoginScreen(
                 modifier = Modifier.padding(10.dp),
                 text = "Welcome to FirebaseChat",
                 style = AppTheme.typography.h1,
-                color = AppTheme.colors.textPrimary
+                color = AppTheme.colors.colorChatTitleText
             )
             Text(
                 modifier = Modifier.padding(bottom = 10.dp),
                 text = "Welcome to FirebaseChat",
                 style = AppTheme.typography.subtitle,
-                color = AppTheme.colors.textPrimary
+                color = AppTheme.colors.colorChatTitleText
             )
             IconText(
                 modifier = Modifier
-                    .border(
-                        2.dp,
-                        AppTheme.colors.textPrimary,
-                        RoundedCornerShape(5.dp)
-                    )
                     .padding(horizontal = 20.dp, vertical = 10.dp),
-                color = AppTheme.colors.textPrimary,
+                textColor = AppTheme.colors.colorChatTitleText,
                 icon = R.drawable.google,
-                text = "Sign in with google"
-            ) {
-                loading = true
-                authManager.launchSignIn(launcher = launcher)
-            }
+                text = "Sign in with google",
+                border = BorderStroke(
+                    2.dp,
+                    AppTheme.colors.colorChatTitleText
+                ),
+                shape = RoundedCornerShape(5.dp),
+                onClick = loginClick
+            )
         }
         if (loading) {
             LoadingCircle()
         }
     }
+}
+
+private fun signInWithCredential(
+    idToken: String,
+    authManager: AuthManager,
+    firebaseDb: DbManager,
+    onSuccess: () -> Unit,
+    onFailure: (String) -> Unit
+) {
+    authManager.signInWithCredential(
+        idToken = idToken,
+        onSuccess = { user ->
+            UserConfig.userEmail = user.email
+            UserConfig.userName = user.displayName
+            UserConfig.userId = user.uid
+            firebaseDb.updateUser(
+                user = UserInfoModel(),
+                onSuccess = onSuccess,
+                onFailure = onFailure
+            )
+        },
+        onFailure = onFailure
+    )
 }

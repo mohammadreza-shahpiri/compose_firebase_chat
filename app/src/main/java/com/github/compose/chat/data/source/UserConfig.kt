@@ -1,4 +1,4 @@
-package com.github.compose.chat.data.source.local
+package com.github.compose.chat.data.source
 
 import com.github.compose.chat.AppLoader
 import com.github.compose.chat.utils.getPref
@@ -33,5 +33,19 @@ object UserConfig{
         }
         set(value) {
             preference.edit().putString("firebase_token",value).apply()
+        }
+    var accessToken:String?
+        get() {
+            return preference.getString("accessToken","")
+        }
+        set(value) {
+            preference.edit().putString("accessToken",value).apply()
+        }
+    var isLight:Boolean
+        get() {
+            return preference.getBoolean("is_light",true)
+        }
+        set(value) {
+            preference.edit().putBoolean("is_light",value).apply()
         }
 }

@@ -1,4 +1,4 @@
-package com.github.compose.chat.data.source.local
+package com.github.compose.chat.data.source
 
 import androidx.room.*
 import com.github.compose.chat.data.model.UserInfoModel

@@ -23,7 +23,7 @@ fun LoadingCircle(
         LottieLoader(
             modifier = Modifier.size(size),
             animation = R.raw.loading,
-            color = AppTheme.colors.textPrimary
+            color = AppTheme.colors.colorChatBlue
         )
     }
 }

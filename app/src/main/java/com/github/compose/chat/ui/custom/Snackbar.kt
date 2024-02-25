@@ -22,8 +22,8 @@ import com.github.compose.chat.data.model.DialogType
 import com.github.compose.chat.data.model.ToastData
 import com.github.compose.chat.ui.theme.AppTheme
 import com.github.compose.chat.ui.theme.Blue
-import com.github.compose.chat.ui.theme.Green
 import com.github.compose.chat.ui.theme.Red
+import com.github.compose.chat.ui.theme.Teal
 import com.github.compose.chat.ui.theme.WhiteBackground
 import com.github.compose.chat.utils.drawRect
 
@@ -33,7 +33,7 @@ fun CustomSnackBar(toastData: ToastData) {
         DialogType.SUCCESS -> {
             Snack(
                 message = toastData.message,
-                containerColor = Green,
+                containerColor = Teal,
                 icon = Icons.Outlined.Done
             )
         }

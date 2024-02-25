@@ -11,14 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.compose.chat.R
-import com.github.compose.chat.firebase.TokenManager
 import com.github.compose.chat.navigation.NavTarget
 import com.github.compose.chat.ui.custom.LottieLoader
 import com.github.compose.chat.ui.viewmodel.MainViewModel
@@ -26,9 +24,7 @@ import com.github.compose.chat.utils.LaunchEffectTrue
 import com.github.compose.chat.utils.LocalActivity
 import com.github.compose.chat.utils.LocalAuthManager
 import com.github.compose.chat.utils.loge
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun SplashScreen(
@@ -36,22 +32,18 @@ fun SplashScreen(
 ) {
     var visibility by remember { mutableStateOf(false) }
     val authManager = LocalAuthManager.current
-    val coroutineScope= rememberCoroutineScope()
+    loge(authManager.getCurrentUser()?.email)
     LaunchEffectTrue {
-        loge(authManager.getCurrentUser()?.uid) //ALSOZvOEOdbIPV8Xpe4FX9TbSEe2
-        loge(authManager.getCurrentUser()?.email)
+        //ALSOZvOEOdbIPV8Xpe4FX9TbSEe2
         visibility = true
         delay(3000)
         visibility = false
         delay(600)
-       coroutineScope.launch(Dispatchers.IO){
-           loge(TokenManager.getAccessToken())
-       }
-        /*if (authManager.isUserLogin()) {
+        if (authManager.isUserLogin()) {
             mainViewModel.navigateTo(NavTarget.Main.Base)
         } else {
             mainViewModel.navigateTo(NavTarget.Auth.Base)
-        }*/
+        }
     }
     AnimatedVisibility(
         visible = visibility,

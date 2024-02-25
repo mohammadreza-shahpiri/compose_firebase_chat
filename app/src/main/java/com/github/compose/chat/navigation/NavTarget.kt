@@ -1,12 +1,14 @@
 package com.github.compose.chat.navigation
 
 import androidx.compose.runtime.Immutable
+import com.github.compose.chat.utils.loge
 
 @Immutable
 sealed class NavTarget(
     val route: String,
     val replace: Boolean = false,
-    val popBackStack: Boolean = false
+    val popBackStack: Boolean = false,
+    val hazBottomBar: Boolean = false,
 ) {
 
     data object Up : NavTarget(Up::class.java.name)
@@ -19,18 +21,19 @@ sealed class NavTarget(
     ) : NavTarget(route, replace = replace) {
         data object Base : Auth(route = Base::class.java.name, replace = true)
         data object Login : Auth(route = Login::class.java.name)
-        data object ForgotPass : Auth(route = ForgotPass::class.java.name)
-        data object ConfirmCode : Auth(route = ConfirmCode::class.java.name)
     }
 
     sealed class Main(
         route: String,
-        replace: Boolean = false
-    ) : NavTarget(route = route, replace = replace) {
+        replace: Boolean = false,
+        hazBottomBar: Boolean = false
+    ) : NavTarget(route = route, replace = replace, hazBottomBar = hazBottomBar) {
         data object Base : Main(route = Base::class.java.name, replace = true)
-        data object Home : Main(route = Home::class.java.name)
-        data object About : Main(route = About::class.java.name)
-        data object Menu : Main(route = Menu::class.java.name)
+        data object Home : Main(route = Home::class.java.name, hazBottomBar = true)
+        data object Contact : Main(route = Contact::class.java.name)
+        data object Chat : Main(
+            route = "${Chat::class.java.name}/{target_email}",
+        )
     }
 }
 
@@ -47,5 +50,8 @@ fun NavTarget?.isHome() = (this?.route == NavTarget.Main.Home.route)
 fun String?.toNavTarget(): NavTarget? = runCatching {
     if (this.isNullOrBlank()) return null
     val route = split("/")[0]
-    return (Class.forName(route).getDeclaredConstructor().newInstance() as? NavTarget)
+    val cls = Class.forName(route).declaredConstructors.firstOrNull()?.apply {
+        isAccessible = true
+    }?.newInstance()
+    return (cls as? NavTarget)
 }.getOrNull()

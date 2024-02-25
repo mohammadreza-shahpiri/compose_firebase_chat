@@ -2,7 +2,7 @@ package com.github.compose.chat.utils
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.staticCompositionLocalOf
-import com.github.compose.chat.data.source.local.DbManager
+import com.github.compose.chat.data.source.DbManager
 import com.github.compose.chat.firebase.AuthManager
 
 val LocalActivity = staticCompositionLocalOf<ComponentActivity> {

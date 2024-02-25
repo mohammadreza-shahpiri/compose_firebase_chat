@@ -3,7 +3,7 @@ package com.github.compose.chat.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.github.compose.chat.data.source.local.UserConfig
+import com.github.compose.chat.data.source.UserConfig
 
 @Entity(
     tableName = "user_info"
